@@ -1,6 +1,9 @@
 import sys
+
+DEBUG = False
+
 prg = [int(x) for x in input().split()]
-ram = [0]*10
+ram = [0]*100
 def read(addr):
     if addr >= 0:
         return ram[addr]
@@ -15,7 +18,7 @@ def read(addr):
 def write(addr,value):
     if addr >= 0:
         ram[addr] = value
-    if addr == -1:
+    elif addr == -1:
         print(chr(value), end='')
     elif addr == -2:
         pass
@@ -27,8 +30,9 @@ for a,b in enumerate(prg):
     ram[a] = b
 pc = 0
 while True:
-    print(ram)
-    v = read(read(pc))-read(read(pc+1))
+    if DEBUG:
+        print('PC : {0}, RAM : {1}'.format(pc, ram))
+    v = read(read(pc+1))-read(read(pc))
     write(read(pc+1),v)
     if v==0:
         pc = read(pc+2)
